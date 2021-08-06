@@ -22,3 +22,4 @@ k = 8
 En range search tenemos nuestra imagen de query Q, extendemos los límites en base al vector característico de Q a partir del rango r tanto en positivo como en negativo, al final analizamos los objetos que se intersecan con los límites y nos quedamos solamente con las rutas. A continuación, mostraremos los resultados del análisis experimental, donde definimos un r que es el rango de búsqueda y el n para estas comparaciones es el del RTree más grande de 12800.
 
 ![Screenshot](tablaComp.PNG)
+![Screenshot](graficoComp2.PNG)
