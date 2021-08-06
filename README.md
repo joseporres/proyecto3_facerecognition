@@ -6,6 +6,8 @@ https://docs.google.com/document/d/1nRzpX7zClwdnlMmgEE0AKf-US16jJ1F1Xc-DtRgZGf4/
 # Construccion del rtree:
 Para la construcción del rtree tuvimos que tener acceso a la colección de imágenes a utilizar. Una vez descargadas y teniendo acceso a las imágenes, podemos observar que cada persona tiene su carpeta y dentro de esa misma tienen 1 o más imágenes. El algoritmo consiste en guardar las direcciones de los folders en un array e iterar en cada uno. Al tener uno de estos folderes, de la misma forma, obtenemos otro array de direcciones pero esta vez ya teniendo las imágenes e iteramos en él. Al iterar en cada imagen, la cargamos con la función load de la librería de  face_recognition para luego obtener el vector característico de la misma. Esta función de encoding, si es que la imagen tiene varias caras, trae una lista de vectores característicos de tamaño 128 para cada cara. Luego iteramos en estas, conseguimos sus coordenadas y finalmente lo insertamos en el rtree el cual se guardará como 2 archivos .idx y .dat. Esto se repetirá hasta completar el rtree con n imagenest.
 
+# KNN-Rtree y KNN-secuencial
+
 Para la toma de datos del KNN-Rtree se tuvo que crear varios rtrees con el fin de tener diferentes tamaños y poder observar la decadencia de la eficacia conforme vamos aumentando la cantidad de imágenes.
 
 En KNN-Secuencial iteramos en la carpeta lfw dentro de preprocess y ahí en cada una de las carpetas con las respectivas imágenes de las personas.
@@ -17,4 +19,7 @@ k = 8
 ![Screenshot](CapturaF.PNG)
 ![Screenshot](graficoComp.PNG)
 
+# Range Search
+
 En range search tenemos nuestra imagen de query Q, extendemos los límites en base al vector característico de Q a partir del rango r tanto en positivo como en negativo, al final analizamos los objetos que se intersecan con los límites y nos quedamos solamente con las rutas. A continuación, mostraremos los resultados del análisis experimental, donde definimos un r que es el rango de búsqueda y el n para estas comparaciones es el del RTree más grande de 12800.
+
