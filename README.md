@@ -10,3 +10,7 @@ Para la toma de datos del KNN-Rtree se tuvo que crear varios rtrees con el fin d
 
 En KNN-Secuencial iteramos en la carpeta lfw dentro de preprocess y ahí en cada una de las carpetas con las respectivas imágenes de las personas.
 
+Truncado a 2 decimales:
+
+k = 8
+
