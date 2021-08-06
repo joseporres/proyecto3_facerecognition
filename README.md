@@ -23,3 +23,6 @@ En range search tenemos nuestra imagen de query Q, extendemos los límites en ba
 
 ![Screenshot](tablaComp.PNG)
 ![Screenshot](graficoComp2.PNG)
+
+# Video explicativo
+https://drive.google.com/file/d/1oIV6L0Igk990mW93w9BsS7L98yqUTu-p/view?usp=sharing
