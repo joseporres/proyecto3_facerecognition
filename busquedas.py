@@ -2,8 +2,7 @@ import face_recognition
 from rtree import index 
 import os
 import heapq
-import json
-import linecache
+from time import time
 
 def knnSequential(k, Q, n):  
     cont = 0  
@@ -40,6 +39,7 @@ def knnSequential(k, Q, n):
 
 
 def rangeSearch(r, Q, n):
+    print(r)
     p = index.Property()
     p.dimension = 128
     p.buffering_capacity = 3
@@ -47,7 +47,12 @@ def rangeSearch(r, Q, n):
     lim = []
     lim.extend( [ i - r for i in Q ])
     lim.extend( [ i + r for i in Q ])
-    return [x.object for x in Rtree.intersection(lim, objects=True)]
+    intersect = Rtree.intersection(lim, objects=True)
+    ans = []
+    for x in intersect:
+        ans.append(x.object)
+        print(x.object)
+    return ans
 
 def knnRtree(k, Q, n):
   p = index.Property()
@@ -61,9 +66,11 @@ def knnRtree(k, Q, n):
 
   return list(Rtree.nearest(coordinates=listQ, num_results=k, objects='raw'))
 
-# print(rangeSearch(0.2
+# start_time = time()
+# print(rangeSearch(0.25
 # , face_recognition.face_encodings(face_recognition.load_image_file('fotos_prueba/unknown.jpg'))[0]
-# , 100))
+# , 12800))
+# print(time() - start_time)
 
 # print(knnRtree(5
 # , face_recognition.face_encodings(face_recognition.load_image_file('fotos_prueba/unknown.jpg'))[0]

@@ -1,5 +1,5 @@
 import os
-from flask import Flask,jsonify,render_template, request, session, Response, redirect
+from flask import Flask,jsonify,render_template, request, session, Response, redirect, send_from_directory
 
 from datetime import datetime
 from sqlalchemy import and_
@@ -10,10 +10,14 @@ import numpy as np
 from PIL import Image
 from werkzeug.utils import secure_filename
 
+MEDIA_FOLDER = "preprocess"
+
+
 
 
 from busquedas import knnSequential
 from busquedas import knnRtree
+from busquedas import rangeSearch
 from time import time
 
 import face_recognition
@@ -29,6 +33,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 
+
 @app.route('/')
 def index():
     return render_template("mainimage.html")
@@ -36,6 +41,7 @@ def index():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_image():
@@ -47,7 +53,7 @@ def upload_image():
     
     file = request.files['file']
     typesearch=request.form.get("typesearch")
-    k = request.form.get("k")
+    k = float(request.form.get("k"))
     #print(k)
     n = request.form.get("n")
     #print(n)
@@ -63,7 +69,7 @@ def upload_image():
 
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
-        output = search(filename,typesearch,int(k),int(n))
+        output = search(filename,typesearch, k, int(n))
 
         return Response(json.dumps(output), status=201, mimetype="application/json")
     else:
@@ -76,31 +82,20 @@ def upload_image():
 def search(filename,typeserach,k,n):
 
     if(int(typeserach)==1):#knn_seq
-        #print("Knn seq")
         path = 'fotos/' + filename
-        #print(path)
         Q = face_recognition.face_encodings(face_recognition.load_image_file(path))[0]
-        start_time = time()
-        ldImage = knnSequential(k,Q,n)
-        #print(time() - start_time)
-
-        #print(ldImage)
-        
-        return ldImage
+        return knnSequential(int(k),Q,n)
         
              
     elif(int(typeserach)==2):#knn_rtree
-        #print("Knn rtree")
         path = 'fotos/' + filename
-        #print(path)
         Q = face_recognition.face_encodings(face_recognition.load_image_file(path))[0]
+        return knnRtree(int(k),Q,n)
 
-        start_time = time()
-        ldImage = knnRtree(k,Q,n)
-        #print(time() - start_time)
-        # print(ldImage)
-        return ldImage
-        
+    elif (int(typeserach)==3): #range search
+        path = 'fotos/' + filename
+        Q = face_recognition.face_encodings(face_recognition.load_image_file(path))[0]
+        return rangeSearch(k, Q, n)
 
     return {}
 

@@ -6,7 +6,7 @@ $(function () {
     $('#imageUploadForm').on('submit',(function(e) {
       e.preventDefault();
       var formData = new FormData(this);
-      var option=$("#typeSearch").val();
+      var option= parseFloat($("#typeSearch").val());
       formData.append("typesearch", option);
       formData.append("k",$("#k").val());
       formData.append("n",$("#n").val());
@@ -16,6 +16,7 @@ $(function () {
       $("#bwhite").text("");
       $("#spots").text("");
       $("#result").text("");
+      document.getElementById("ans").innerHTML = "";
 
       $.ajax({
           type:'POST',
@@ -25,27 +26,25 @@ $(function () {
           contentType: false,
           processData: false,
           success:function(data){
-            // $.growl.error({ message: "The kitten is attacking!" });
-            // $.growl.notice({ message: data.msg });
-            // $.growl.warning({ message: "The kitten is ugly!" });
-          // </script>
-          $( "body" ).removeClass( "loader loader-default is-active" );
-          
-          var rpta = "";
-          for (let step = 0; step < data.length; step++) {
-            if(option == 1){
-              var aux =data[step][1].split("/");
-              rpta += (step+ 1).toString() + ". " + aux[aux.length-1].split(".")[0] + "\n";
-              console.log(rpta);
+            $( "body" ).removeClass( "loader loader-default is-active" );
+
+            for (let step = 0; step < data.length; step++) {
+              var img = document.createElement('img');
+              if (option == 1)
+              {
+                img.src = "static/" + data[step][1];
+              }
+              else if (option == 2)
+              {
+                img.src = "static/" + data[step];
+              }
+              else if (option == 3)
+              {
+                img.src = "static/" + data[step];
+                console.log(img.src);
+              }
+              document.getElementById("ans").appendChild(img);
             }
-            else {
-              var aux =data[step].split("/");
-              rpta += (step+ 1).toString() + ". " + aux[aux.length-1].split(".")[0] + "\n";
-              console.log(rpta);
-            }
-            
-          }
-          $("#ans").text(rpta);
           
 
           
@@ -53,7 +52,7 @@ $(function () {
           error: function(data){
             $( "body" ).removeClass( "loader loader-default is-active" );
             // $.growl.error({ message: data.msg});
-              console.log(data);
+              // console.log(data);
           }
       });
   }));
