@@ -14,4 +14,4 @@ Truncado a 2 decimales:
 
 k = 8
 
-![Screenshot](capturaF.png)
+![Screenshot](CapturaF.png)
